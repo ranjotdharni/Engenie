@@ -17,7 +17,7 @@ public class Engine {
     // The window handle
     public static long window;
     private TexturePack sheet, meet;
-    private Rectangle test = new Rectangle(200f, 250f, 148.25f, 98f, 4.0f), best = new Rectangle(-2300f, 1500f, 192.071428571f, 130f, 20f);
+    private Rectangle test = new Rectangle(200f, 250f, 148.25f, 98f, 4.0f), best = new Rectangle(-3000f, 1500f, 192.071428571f, 130f, 20f);
     private Animation run, walk;
     private boolean windowResized = false;
 
