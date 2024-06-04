@@ -5,6 +5,7 @@ import Graphics.*;
 import java.nio.*;
 import java.util.Objects;
 
+import Map.Background;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import static org.lwjgl.glfw.Callbacks.*;
@@ -19,6 +20,7 @@ public class Engine {
     private TexturePack sheet, meet;
     private Rectangle test = new Rectangle(200f, 250f, 148.25f, 98f, 4.0f), best = new Rectangle(-3000f, 1500f, 192.071428571f, 130f, 20f);
     private Animation run, walk;
+    private Background bg;
     private boolean windowResized = false;
 
     public void run() {
@@ -91,7 +93,9 @@ public class Engine {
         glfwSwapInterval(1);
 
         GL.createCapabilities();
-        glEnable(GL_TEXTURE_2D);    // This line is necessary to make items drawn to the screen visible
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);// This line is necessary to make items drawn to the screen visible
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         this.sheet = new TexturePack("C:\\engine\\src\\spritesheet2.png", 1186f, 294f);
@@ -101,6 +105,8 @@ public class Engine {
         this.meet = new TexturePack("C:\\engine\\src\\spritesheet3.png", 5378f, 1170f);
         this.walk = new Animation(best, meet.generateTexture(), 8, 10, 10, true);
         walk.start();
+
+        this.bg = new Background("C:\\engine\\src\\bg.png", 512f, 256f, 1920f, 1080f);
 
         // Make the window visible
         glfwShowWindow(window);
@@ -123,6 +129,7 @@ public class Engine {
 
             // !!!!!!!!!!!!!!!!!!!!!!!!!!START MAIN GAME LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+            bg.draw();
             run.advance();
             walk.advance();
 

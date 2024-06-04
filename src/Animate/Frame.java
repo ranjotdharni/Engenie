@@ -6,7 +6,7 @@ public class Frame {
     private Texture texture;
     private int animationIndex, frameIndex;
 
-    Frame(Texture texture, int animationIndex, int frameIndex) {
+    public Frame(Texture texture, int animationIndex, int frameIndex) {
         this.texture = texture;
         this.animationIndex = animationIndex;
         this.frameIndex = frameIndex;

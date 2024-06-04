@@ -52,4 +52,12 @@ public class TexturePack {
     public Texture generateTexture() {
         return new Texture(textureId, width, height);
     }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
 }
