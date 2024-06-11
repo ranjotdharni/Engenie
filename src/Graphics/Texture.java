@@ -6,8 +6,8 @@ public class Texture {
 
     public Texture(int textureId, float width, float height) {
         this.textureId = textureId;
-        this.SINGLE_PIXEL_WIDTH = 1f / width;
-        this.SINGLE_PIXEL_HEIGHT = 1f / height;
+        this.SINGLE_PIXEL_WIDTH = 2f / width;
+        this.SINGLE_PIXEL_HEIGHT = 2f / height;
     }
 
     public int getTextureId() {

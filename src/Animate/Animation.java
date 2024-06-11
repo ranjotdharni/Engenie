@@ -2,6 +2,7 @@ package Animate;
 
 import Geometry.Rectangle;
 import Graphics.Texture;
+import Main.App;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -72,11 +73,8 @@ public class Animation {
         }
 
         if (!(frameIndex < frameCount)) {   // Once animation finishes, it either stops running or loops
-            if (looping) {
-                frameIndex = 0;
-            }
-            else {
-                frameIndex = 0;
+            frameIndex = 0;
+            if (!looping) {
                 running = false;
             }
         }
@@ -98,10 +96,10 @@ public class Animation {
         float SINGLE_PIXEL_WIDTH = currentFrame.getTexture().getSinglePixelWidth();
         float SINGLE_PIXEL_HEIGHT = currentFrame.getTexture().getSinglePixelHeight();
 
-        float left = playerX * SINGLE_PIXEL_WIDTH;
-        float top = playerY * SINGLE_PIXEL_HEIGHT;
-        float right = left + (cWidth * scale * SINGLE_PIXEL_WIDTH);
-        float bottom = top - (cHeight * scale * SINGLE_PIXEL_HEIGHT);
+        float left = playerX * (2f / (float) App.WINDOW_WIDTH);
+        float top = playerY * (2f / (float) App.WINDOW_HEIGHT);
+        float right = left + (cWidth * scale * (2f / (float) App.WINDOW_WIDTH));
+        float bottom = top - (cHeight * scale * (2f / (float) App.WINDOW_HEIGHT));
 
 
         // Bind texture
@@ -110,14 +108,17 @@ public class Animation {
         // texture coords range from 0 to 1
         // vertex coords range from -1 to 1
 
+        // When rendering texture coordinates below, we divide by 2 because the texture grid goes from 0 to
+        // 1, so its single pixel width would be 1 / width, not 2 / width (same concept applies to height)
+
         glBegin(GL_QUADS);
-        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * frame, SINGLE_PIXEL_HEIGHT * cHeight * animIndex);
+        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * frame / 2f, SINGLE_PIXEL_HEIGHT * cHeight * animIndex / 2f);
         glVertex2f(left * mirrorX, top * mirrorY);
-        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * (frame + 1), SINGLE_PIXEL_HEIGHT * cHeight * animIndex);
+        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * (frame + 1) / 2f, SINGLE_PIXEL_HEIGHT * cHeight * animIndex / 2f);
         glVertex2f(right * mirrorX, top * mirrorY);
-        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * (frame + 1), SINGLE_PIXEL_HEIGHT * cHeight * (animIndex + 1));
+        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * (frame + 1) / 2f, SINGLE_PIXEL_HEIGHT * cHeight * (animIndex + 1) / 2f);
         glVertex2f(right * mirrorX, bottom * mirrorY);
-        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * frame, SINGLE_PIXEL_HEIGHT * cHeight * (animIndex + 1));
+        glTexCoord2f(SINGLE_PIXEL_WIDTH * cWidth * frame / 2f, SINGLE_PIXEL_HEIGHT * cHeight * (animIndex + 1) / 2f);
         glVertex2f(left * mirrorX, bottom * mirrorY);
         glEnd();
     }

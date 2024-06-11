@@ -1,11 +1,8 @@
-import Geometry.*;
-import Animate.*;
-import Graphics.*;
+package Tools;
 
 import java.nio.*;
 import java.util.Objects;
 
-import Map.Background;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import static org.lwjgl.glfw.Callbacks.*;
@@ -14,29 +11,34 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public class Engine {
-    // The window handle
-    public static long window;
-    private TexturePack sheet, meet;
-    private Rectangle test = new Rectangle(200f, 250f, 148.25f, 98f, 4.0f), best = new Rectangle(-3000f, 1500f, 192.071428571f, 130f, 20f);
-    private Animation run, walk;
-    private Background bg;
+public abstract class Window {
+    private long window;
+    private String WINDOW_TITLE;
+    private int WINDOW_WIDTH, WINDOW_HEIGHT;
     private boolean windowResized = false;
 
-    public void run() {
-        init();
-        loop();
+    protected abstract void initialize();
+    protected abstract void logic();
 
-        // Free the window callbacks and destroy the window
-        glfwFreeCallbacks(window);
-        glfwDestroyWindow(window);
-
-        // Terminate GLFW and free the error callback
-        glfwTerminate();
-        Objects.requireNonNull(glfwSetErrorCallback(null)).free();
+    public Window(String title, int width, int height) {
+        this.WINDOW_TITLE = title;
+        this.WINDOW_WIDTH = width;
+        this.WINDOW_HEIGHT = height;
     }
 
-    private void init() {
+    public String getTitle() {
+        return WINDOW_TITLE;
+    }
+
+    public int getWidth() {
+        return WINDOW_WIDTH;
+    }
+
+    public int getHeight() {
+        return WINDOW_HEIGHT;
+    }
+
+    public void init() {
         // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
 
@@ -51,7 +53,7 @@ public class Engine {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
 
         // Create the window
-        window = glfwCreateWindow(800, 600, "GLFW Example", NULL, NULL);
+        window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, NULL, NULL);
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
@@ -98,21 +100,15 @@ public class Engine {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);// This line is necessary to make items drawn to the screen visible
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        this.sheet = new TexturePack("C:\\engine\\src\\spritesheet2.png", 1186f, 294f);
-        this.run = new Animation(test, sheet.generateTexture(), 2, 8, 20, true);
-        run.start();
-
-        this.meet = new TexturePack("C:\\engine\\src\\spritesheet3.png", 5378f, 1170f);
-        this.walk = new Animation(best, meet.generateTexture(), 8, 10, 10, true);
-        walk.start();
-
-        this.bg = new Background("C:\\engine\\src\\bg.png", 512f, 256f, 1920f, 1080f);
+        initialize();
 
         // Make the window visible
         glfwShowWindow(window);
     }
 
-    private void loop() {
+    public void run() {
+        init();
+
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
 
@@ -129,9 +125,7 @@ public class Engine {
 
             // !!!!!!!!!!!!!!!!!!!!!!!!!!START MAIN GAME LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-            bg.draw();
-            run.advance();
-            walk.advance();
+            logic();
 
             // !!!!!!!!!!!!!!!!!!!!!!!!!!END MAIN GAME LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -139,9 +133,13 @@ public class Engine {
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-    }
 
-    public static void main(String[] args) {
-        new Engine().run();
+        // Free the window callbacks and destroy the window
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
+
+        // Terminate GLFW and free the error callback
+        glfwTerminate();
+        Objects.requireNonNull(glfwSetErrorCallback(null)).free();
     }
 }
