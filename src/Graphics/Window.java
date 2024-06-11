@@ -1,4 +1,4 @@
-package Tools;
+package Graphics;
 
 import java.nio.*;
 import java.util.Objects;

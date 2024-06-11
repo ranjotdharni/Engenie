@@ -4,7 +4,7 @@ import Animate.Animation;
 import Geometry.Rectangle;
 import Graphics.TexturePack;
 import Map.Background;
-import Tools.Window;
+import Graphics.Window;
 
 public class App extends Window {
     public static String WINDOW_TITLE = "Engenie App Test";
