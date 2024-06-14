@@ -7,37 +7,55 @@ import Graphics.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Background {
-    private TexturePack bg;
-    private Rectangle screen;
-    private float SINGLE_PIXEL_WIDTH, SINGLE_PIXEL_HEIGHT, offsetX = 0, offsetY = 0;
+    private Texture bg;
+    private float width, height, SINGLE_PIXEL_WIDTH, SINGLE_PIXEL_HEIGHT, offsetX = 0f, offsetY = 0f, stepX, stepY, mirrorX = 1f, mirrorY = 1f;
 
-    public Background(String path, float width, float height, float screenWidth, float screenHeight) {
-        this.bg = new TexturePack(path, width, height);
-        this.screen = new Rectangle((float) -screenWidth / 2, (float) screenHeight / 2, screenWidth, screenHeight, 1f);
-        this.SINGLE_PIXEL_WIDTH = 2f / width;
-        this.SINGLE_PIXEL_HEIGHT = 2f / height;
+    public Background(TexturePack assets, float stepX, float stepY) {
+        this.bg = assets.generateTexture();
+        this.width = assets.getWidth();
+        this.height = assets.getHeight();
+        this.SINGLE_PIXEL_WIDTH = bg.getSinglePixelWidth();
+        this.SINGLE_PIXEL_HEIGHT = bg.getSinglePixelHeight();
+        this.stepX = stepX;
+        this.stepY = stepY;
+    }
+
+    public Background(TexturePack assets, float stepX, float stepY, boolean flipH, boolean flipV) {
+        this.bg = assets.generateTexture();
+        this.width = assets.getWidth();
+        this.height = assets.getHeight();
+        this.SINGLE_PIXEL_WIDTH = bg.getSinglePixelWidth();
+        this.SINGLE_PIXEL_HEIGHT = bg.getSinglePixelHeight();
+        this.stepX = stepX;
+        this.stepY = stepY;
+        this.mirrorX = flipH ? -1f : 1f;
+        this.mirrorY = flipV ? -1f : 1f;
+    }
+
+    public void horizontalFlip() {
+        this.mirrorX = -this.mirrorX;
+    }
+
+    public void verticalFlip() {
+        this.mirrorY = -this.mirrorY;
     }
 
     public void draw() {
-        Texture texture = this.bg.generateTexture();
-        renderTexture(this.screen, new Frame(texture, 0, 0), false, true);
+        renderTexture(new Frame(bg, 0, 0));
 
-        offsetX = offsetX - 2f;
-        offsetY = offsetY - 0f;
+        offsetX = offsetX - stepX;
+        offsetY = offsetY - stepY;
 
-        if (offsetX >= bg.getWidth() || offsetX <= -bg.getWidth()) {
+        if (offsetX >= width || offsetX <= -width) {
             offsetX = 0;
         }
 
-        if (offsetY >= bg.getHeight() || offsetY <= -bg.getHeight()) {
+        if (offsetY >= height || offsetY <= -height) {
             offsetY = 0;
         }
     }
 
-    private void renderTexture(Rectangle rect, Frame currentFrame, boolean horizontalFlip, boolean verticalFlip) {
-        float mirrorX = (horizontalFlip) ? -1f : 1f;
-        float mirrorY = (verticalFlip) ? -1f : 1f;
-
+    private void renderTexture(Frame currentFrame) {
         // Bind texture
         glBindTexture(GL_TEXTURE_2D, currentFrame.getTexture().getTextureId());
 

@@ -13,17 +13,17 @@ import static org.lwjgl.system.MemoryUtil.*;
 
 public abstract class Window {
     private long window;
-    private String WINDOW_TITLE;
-    private int WINDOW_WIDTH, WINDOW_HEIGHT;
     private boolean windowResized = false;
+    public static String WINDOW_TITLE = "Engenie App";
+    public static int WINDOW_WIDTH = 1080, WINDOW_HEIGHT = 720;
 
     protected abstract void initialize();
     protected abstract void logic();
 
     public Window(String title, int width, int height) {
-        this.WINDOW_TITLE = title;
-        this.WINDOW_WIDTH = width;
-        this.WINDOW_HEIGHT = height;
+        WINDOW_TITLE = title;
+        WINDOW_WIDTH = width;
+        WINDOW_HEIGHT = height;
     }
 
     public String getTitle() {
