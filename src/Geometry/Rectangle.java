@@ -1,22 +1,18 @@
 package Geometry;
 
 public class Rectangle {
-    private float x, y, width, height, scale;
+    private float width, height, scale;
+    private Point position;
 
-    public Rectangle(float x, float y, float width, float height, float scale) {
-        this.x = x;
-        this.y = y;
+    public Rectangle(Point position, float width, float height, float scale) {
+        this.position = position;
         this.width = width;
         this.height = height;
         this.scale = scale;
     }
 
-    public void setX(float x) {
-        this.x = x;
-    }
-
-    public void setY(float y) {
-        this.y = y;
+    public void setPosition(Point position) {
+        this.position = position;
     }
 
     public void setWidth(float width) {
@@ -31,12 +27,8 @@ public class Rectangle {
         this.scale = scale;
     }
 
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
+    public Point getPosition() {
+        return position;
     }
 
     public float getWidth() {

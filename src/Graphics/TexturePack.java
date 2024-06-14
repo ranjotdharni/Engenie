@@ -11,9 +11,9 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TexturePack {
     private int textureId;
-    private float width, height;
+    private float width, height, itemWidth, itemHeight;
 
-    public TexturePack(String path, float width, float height) {
+    public TexturePack(String path, float width, float height, float itemWidth, float itemHeight) {
         IntBuffer widthBuffer = BufferUtils.createIntBuffer((int) (width + 0.5f)); // change this!!!!!
         IntBuffer heightBuffer = BufferUtils.createIntBuffer((int) (height + 0.5f)); // change this!!!!!
         IntBuffer channelsBuffer = BufferUtils.createIntBuffer(4);
@@ -47,10 +47,12 @@ public class TexturePack {
         this.textureId = textureId;
         this.width = width;
         this.height = height;
+        this.itemWidth = itemWidth;
+        this.itemHeight = itemHeight;
     }
 
     public Texture generateTexture() {
-        return new Texture(textureId, width, height);
+        return new Texture(textureId, width, height, itemWidth, itemHeight);
     }
 
     public float getWidth() {

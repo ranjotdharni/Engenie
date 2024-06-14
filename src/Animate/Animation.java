@@ -1,5 +1,6 @@
 package Animate;
 
+import Geometry.Point;
 import Geometry.Rectangle;
 import Graphics.Texture;
 import Graphics.TexturePack;
@@ -11,19 +12,19 @@ public class Animation {
     private Rectangle canvas;
     private Texture texture;
     private boolean running = false, showRectangle = false, looping;
-    private float delay, scale, width, height, X, Y, TEXTURE_PIXEL_WIDTH, TEXTURE_PIXEL_HEIGHT, mirrorX = 1f, mirrorY = 1f;
+    private Point position;
+    private float delay, scale, width, height, TEXTURE_PIXEL_WIDTH, TEXTURE_PIXEL_HEIGHT, mirrorX = 1f, mirrorY = 1f;
     private int animationIndex, frameIndex = 0, frameCount;
     private long time;
     private Frame[] frames;
 
-    public Animation(Rectangle canvas, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping) {
-        this.canvas = canvas;
+    public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping) {
         this.texture = texturePack.generateTexture();
+        this.canvas = new Rectangle(position, texture.getItemWidth(), texture.getItemHeight(), scale);
+        this.position = position;
         this.scale = canvas.getScale();
         this.width = canvas.getWidth();
         this.height = canvas.getHeight();
-        this.X = canvas.getX();
-        this.Y = canvas.getY();
         this.TEXTURE_PIXEL_WIDTH = texture.getSinglePixelWidth() * width / 2f;
         this.TEXTURE_PIXEL_HEIGHT = texture.getSinglePixelHeight() * height / 2f;
         this.animationIndex = animationIndex;
@@ -38,14 +39,13 @@ public class Animation {
         }
     }
 
-    public Animation(Rectangle canvas, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping, boolean flipH, boolean flipV) {
-        this.canvas = canvas;
+    public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping, boolean flipH, boolean flipV) {
         this.texture = texturePack.generateTexture();
+        this.canvas = new Rectangle(position, texture.getItemWidth(), texture.getItemHeight(), scale);
+        this.position = position;
         this.scale = canvas.getScale();
         this.width = canvas.getWidth();
         this.height = canvas.getHeight();
-        this.X = canvas.getX();
-        this.Y = canvas.getY();
         this.TEXTURE_PIXEL_WIDTH = texture.getSinglePixelWidth() * width / 2f;
         this.TEXTURE_PIXEL_HEIGHT = texture.getSinglePixelHeight() * height / 2f;
         this.animationIndex = animationIndex;
@@ -116,8 +116,8 @@ public class Animation {
     }
 
     private void renderTexture() {
-        float left = X * (2f / (float) Window.WINDOW_WIDTH);
-        float top = Y * (2f / (float) Window.WINDOW_HEIGHT);
+        float left = position.getX() * (2f / (float) Window.WINDOW_WIDTH);
+        float top = position.getY() * (2f / (float) Window.WINDOW_HEIGHT);
         float right = left + (width * scale * (2f / (float) Window.WINDOW_WIDTH));
         float bottom = top - (height * scale * (2f / (float) Window.WINDOW_HEIGHT));
 
