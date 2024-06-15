@@ -12,7 +12,7 @@ public class Animation {
     private Rectangle canvas;
     private Texture texture;
     private boolean running = false, showRectangle = false, looping;
-    private Point position;
+    //private Point position;
     private float delay, scale, width, height, TEXTURE_PIXEL_WIDTH, TEXTURE_PIXEL_HEIGHT, mirrorX = 1f, mirrorY = 1f;
     private int animationIndex, frameIndex = 0, frameCount;
     private long time;
@@ -21,7 +21,7 @@ public class Animation {
     public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping) {
         this.texture = texturePack.generateTexture();
         this.canvas = new Rectangle(position, texture.getItemWidth(), texture.getItemHeight(), scale);
-        this.position = position;
+        //this.position = position;
         this.scale = canvas.getScale();
         this.width = canvas.getWidth();
         this.height = canvas.getHeight();
@@ -42,7 +42,7 @@ public class Animation {
     public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping, boolean flipH, boolean flipV) {
         this.texture = texturePack.generateTexture();
         this.canvas = new Rectangle(position, texture.getItemWidth(), texture.getItemHeight(), scale);
-        this.position = position;
+        //this.position = position;
         this.scale = canvas.getScale();
         this.width = canvas.getWidth();
         this.height = canvas.getHeight();
@@ -99,12 +99,28 @@ public class Animation {
         return frames[frameIndex];
     }
 
+    public void setRenderRectangle(Rectangle rect) {
+        this.canvas = rect;
+    }
+
+    public Rectangle getRenderRectangle() {
+        return this.canvas;
+    }
+
     public void showRectangle() {
         this.showRectangle = true;
     }
 
     public void hideRectangle() {
         this.showRectangle = false;
+    }
+
+    public void setPosition(Point position) {
+        this.canvas.setPosition(position);
+    }
+
+    public Point getPosition() {
+        return this.canvas.getPosition();
     }
 
     public void horizontalFlip() {
@@ -116,8 +132,8 @@ public class Animation {
     }
 
     private void renderTexture() {
-        float left = position.getX() * (2f / (float) Window.WINDOW_WIDTH);
-        float top = position.getY() * (2f / (float) Window.WINDOW_HEIGHT);
+        float left = canvas.getPosition().getX() * (2f / (float) Window.WINDOW_WIDTH);
+        float top = canvas.getPosition().getY() * (2f / (float) Window.WINDOW_HEIGHT);
         float right = left + (width * scale * (2f / (float) Window.WINDOW_WIDTH));
         float bottom = top - (height * scale * (2f / (float) Window.WINDOW_HEIGHT));
 

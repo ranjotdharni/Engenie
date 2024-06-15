@@ -8,6 +8,11 @@ public class Point {
         this.y = y;
     }
 
+    public Point(Point p) {
+        this.x = p.x;
+        this.y = p.y;
+    }
+
     public void setX(float x) {
         this.x = x;
     }
@@ -22,5 +27,9 @@ public class Point {
 
     public float getY() {
         return y;
+    }
+
+    public boolean equals(Point p) {
+        return x == p.x && y == p.y;
     }
 }

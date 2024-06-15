@@ -12,8 +12,8 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public abstract class Window {
-    private long window;
     private boolean windowResized = false;
+    public static long window;
     public static String WINDOW_TITLE = "Engenie App";
     public static int WINDOW_WIDTH = 1080, WINDOW_HEIGHT = 720;
 
@@ -36,6 +36,10 @@ public abstract class Window {
 
     public int getHeight() {
         return WINDOW_HEIGHT;
+    }
+
+    public static long getWindow() {
+        return window;
     }
 
     public void init() {
