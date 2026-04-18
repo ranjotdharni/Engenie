@@ -1,0 +1,7 @@
+Last Updated: Apr 17, 2026 @ 9:18 PM
+
+
+Dependencies
+
+JDK -- 21
+lwjgl -- 3.4.1

@@ -38,15 +38,15 @@ public class App extends Window {
 
     @Override
     public void initialize() {
-        this.sheet = new TexturePack("C:\\engine\\src\\spritesheet2.png", 1186f, 294f, 148.25f, 98f);
+        this.sheet = new TexturePack("/Users/robbydharni/Documents/Repositories/Engenie/src/spritesheet2.png", 1186f, 294f, 148.25f, 98f);
         this.run = new Animation(new Point(0f, 0f), 1f, sheet, 2, 8, 20, true);
         run.start();
 
-        this.meet = new TexturePack("C:\\engine\\src\\spritesheet3.png", 5378f, 1170f, 192.071428571f, 130f);
+        this.meet = new TexturePack("/Users/robbydharni/Documents/Repositories/Engenie/src/spritesheet3.png", 5378f, 1170f, 192.071428571f, 130f);
         this.walk = new Animation(new Point(100f, 100f), 1f, meet, 8, 10, 10, true);
         walk.start();
 
-        this.bg = new Background(this.run.getRenderRectangle(), new TexturePack("C:\\engine\\src\\bg.png", 2304f, 1296f, 2304f, 1296f), new Border(1f, 1f, 1f, 1f), 5f, 5f, false, true);
+        this.bg = new Background(this.run.getRenderRectangle(), new TexturePack("/Users/robbydharni/Documents/Repositories/Engenie/src/bg.png", 2304f, 1296f, 2304f, 1296f), new Border(1f, 1f, 1f, 1f), 5f, 5f, false, true);
     }
 
     @Override

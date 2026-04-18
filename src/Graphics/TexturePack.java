@@ -21,7 +21,7 @@ public class TexturePack {
         ByteBuffer image = STBImage.stbi_load(path, widthBuffer, heightBuffer, channelsBuffer, 4); // 4 = RGBA channels
 
         if (image == null) {
-            throw new RuntimeException("Failed to load texture: " + STBImage.stbi_failure_reason());
+            throw new RuntimeException("Error: Failed to load texture: \nReason: " + STBImage.stbi_failure_reason());
         }
 
         // Create texture
