@@ -95,42 +95,6 @@ public class Animation {
         }
     }
 
-    public Frame getCurrentFrame() {
-        return frames[frameIndex];
-    }
-
-    public void setRenderRectangle(Rectangle rect) {
-        this.canvas = rect;
-    }
-
-    public Rectangle getRenderRectangle() {
-        return this.canvas;
-    }
-
-    public void showRectangle() {
-        this.showRectangle = true;
-    }
-
-    public void hideRectangle() {
-        this.showRectangle = false;
-    }
-
-    public void setPosition(Point position) {
-        this.canvas.setPosition(position);
-    }
-
-    public Point getPosition() {
-        return this.canvas.getPosition();
-    }
-
-    public void horizontalFlip() {
-        this.mirrorX = -this.mirrorX;
-    }
-
-    public void verticalFlip() {
-        this.mirrorY = -this.mirrorY;
-    }
-
     private void renderTexture() {
         float left = canvas.getPosition().getX() * (2f / (float) Window.WINDOW_WIDTH);
         float top = canvas.getPosition().getY() * (2f / (float) Window.WINDOW_HEIGHT);
@@ -178,5 +142,48 @@ public class Animation {
             // Restore the default color (white)
             glColor3f(1.0f, 1.0f, 1.0f);
         }
+    }
+
+    public void horizontalFlip() {
+        this.mirrorX = -this.mirrorX;
+    }
+    public void verticalFlip() {
+        this.mirrorY = -this.mirrorY;
+    }
+    public void showRectangle() {
+        this.showRectangle = true;
+    }
+    public void hideRectangle() {
+        this.showRectangle = false;
+    }
+
+    public boolean isRectangleShowing() { return this.showRectangle; }
+
+    public Frame getCurrentFrame() {
+        return frames[frameIndex];
+    }
+    public Rectangle getRenderRectangle() {
+        return this.canvas;
+    }
+    public Point getPosition() {
+        return this.canvas.getPosition();
+    }
+    public Rectangle getCanvas() { return this.canvas; }
+    public float getWidth() { return this.width; }
+    public float getHeight() { return this.height; }
+    public float getScale() { return this.scale; }
+    public Texture getTexture() { return this.texture; }
+    public float getTexturePixelWidth() { return this.TEXTURE_PIXEL_WIDTH; }
+    public float getTexturePixelHeight() { return this.TEXTURE_PIXEL_HEIGHT; }
+    public float getAnimationIndex() { return this.animationIndex; }
+    public float getFrameIndex() { return this.frameIndex; }
+    public float getMirrorX() { return this.mirrorX; }
+    public float getMirrorY() { return this.mirrorY; }
+
+    public void setRenderRectangle(Rectangle rect) {
+        this.canvas = rect;
+    }
+    public void setPosition(Point position) {
+        this.canvas.setPosition(position);
     }
 }
