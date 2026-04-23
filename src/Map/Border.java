@@ -2,7 +2,7 @@ package Map;
 
 import Geometry.Point;
 import Geometry.Rectangle;
-import Graphics.Window;
+import Orchestration.Window;
 
 public class Border {
     private float offLeft, offRight, offTop, offBottom;

@@ -12,6 +12,7 @@ public class State<T> {
     }
 
     public String getStateId() { return this.stateId; }
+    public boolean isActiveState() { return false; }
 
     public void apply(T entity) {
         this.enact.accept(entity);

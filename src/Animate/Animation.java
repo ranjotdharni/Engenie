@@ -4,24 +4,23 @@ import Geometry.Point;
 import Geometry.Rectangle;
 import Graphics.Texture;
 import Graphics.TexturePack;
-import Graphics.Window;
+import Orchestration.Window;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Animation {
     private Rectangle canvas;
     private Texture texture;
-    private boolean running = false, showRectangle = false, looping;
+    private boolean running = false, showRectangle = false, looping = false;
     //private Point position;
     private float delay, scale, width, height, TEXTURE_PIXEL_WIDTH, TEXTURE_PIXEL_HEIGHT, mirrorX = 1f, mirrorY = 1f;
     private int animationIndex, frameIndex = 0, frameCount;
     private long time;
     private Frame[] frames;
 
-    public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping) {
+    public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping, boolean running) {
         this.texture = texturePack.generateTexture();
         this.canvas = new Rectangle(position, texture.getItemWidth(), texture.getItemHeight(), scale);
-        //this.position = position;
         this.scale = canvas.getScale();
         this.width = canvas.getWidth();
         this.height = canvas.getHeight();
@@ -29,29 +28,7 @@ public class Animation {
         this.TEXTURE_PIXEL_HEIGHT = texture.getSinglePixelHeight() * height / 2f;
         this.animationIndex = animationIndex;
         this.looping = looping;
-        this.frameCount = frameCount;
-        this.delay = 1000f / fps;
-        this.time = System.currentTimeMillis();
-        this.frames = new Frame[frameCount];
-
-        for (int i = 0; i < frameCount; i++) {
-            frames[i] = new Frame(texture, animationIndex, i);
-        }
-    }
-
-    public Animation(Point position, float scale, TexturePack texturePack, int animationIndex, int frameCount, float fps, boolean looping, boolean flipH, boolean flipV) {
-        this.texture = texturePack.generateTexture();
-        this.canvas = new Rectangle(position, texture.getItemWidth(), texture.getItemHeight(), scale);
-        //this.position = position;
-        this.scale = canvas.getScale();
-        this.width = canvas.getWidth();
-        this.height = canvas.getHeight();
-        this.TEXTURE_PIXEL_WIDTH = texture.getSinglePixelWidth() * width / 2f;
-        this.TEXTURE_PIXEL_HEIGHT = texture.getSinglePixelHeight() * height / 2f;
-        this.animationIndex = animationIndex;
-        this.looping = looping;
-        this.mirrorX = (flipH) ? -1f : 1f;
-        this.mirrorY = (flipV) ? -1f : 1f;
+        this.running = running;
         this.frameCount = frameCount;
         this.delay = 1000f / fps;
         this.time = System.currentTimeMillis();
@@ -186,4 +163,7 @@ public class Animation {
     public void setPosition(Point position) {
         this.canvas.setPosition(position);
     }
+    public void setAnimationIndex(int index) { this.animationIndex = index; }
+    public void setFrameIndex(int index) { this.frameIndex = index; }
+    public void setFrameCount(int count) { this.frameCount = count; }
 }

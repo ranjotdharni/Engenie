@@ -1,4 +1,4 @@
-package Graphics;
+package Orchestration;
 
 import java.nio.*;
 import java.util.Objects;
@@ -11,34 +11,26 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-public abstract class Window {
-    private boolean windowResized = false;
-    public static long window;
+public class Window {
+    public static boolean windowResized = false;
     public static String WINDOW_TITLE = "Engenie App";
     public static int WINDOW_WIDTH = 1080, WINDOW_HEIGHT = 720;
+    private long window = 0;
 
-    protected abstract void initialize();
-    protected abstract void logic();
-
-    public Window(String title, int width, int height) {
-        WINDOW_TITLE = title;
-        WINDOW_WIDTH = width;
-        WINDOW_HEIGHT = height;
+    public Window() {
+        this.init();
     }
 
     public String getTitle() {
         return WINDOW_TITLE;
     }
-
     public int getWidth() {
         return WINDOW_WIDTH;
     }
-
     public int getHeight() {
         return WINDOW_HEIGHT;
     }
-
-    public static long getWindow() {
+    public long getWindow() {
         return window;
     }
 
@@ -58,16 +50,10 @@ public abstract class Window {
 
         // Create the window
         window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE, NULL, NULL);
+
         if (window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
-
-        // Setup a key callback. It will be called every time a key is pressed, repeated or released.
-        glfwSetKeyCallback(window, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) {
-                glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
-            }
-        });
 
         // window resize callback
         glfwSetFramebufferSizeCallback(window, (window, width, height) -> {
@@ -104,18 +90,12 @@ public abstract class Window {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);// This line is necessary to make items drawn to the screen visible
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        initialize();
-
         // Make the window visible
         glfwShowWindow(window);
     }
 
-    public void run() {
-        init();
-
-        while (!glfwWindowShouldClose(window)) {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the framebuffer
-
+    public boolean poll() {
+        if (!glfwWindowShouldClose(window)) {
             if (windowResized) {    // If window resized...
                 int[] width = new int[1];
                 int[] height = new int[1];
@@ -127,15 +107,14 @@ public abstract class Window {
                 windowResized = false;
             }
 
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!START MAIN GAME LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            logic();
-
-            // !!!!!!!!!!!!!!!!!!!!!!!!!!END MAIN GAME LOOP!!!!!!!!!!!!!!!!!!!!!!!!!!
-
             // Swap buffers and poll IO events
             glfwSwapBuffers(window);
+
+            // Check for events like key presses
             glfwPollEvents();
+
+            // main loop should continue
+            return true;
         }
 
         // Free the window callbacks and destroy the window
@@ -145,5 +124,8 @@ public abstract class Window {
         // Terminate GLFW and free the error callback
         glfwTerminate();
         Objects.requireNonNull(glfwSetErrorCallback(null)).free();
+
+        // main loop should terminate
+        return false;
     }
 }

@@ -1,15 +1,15 @@
 package Main;
 
-import Animate.Animation;
-import Geometry.Point;
-import Graphics.TexturePack;
-import Map.Background;
-import Graphics.Window;
-import Map.Border;
+import Orchestration.App;
 
-import org.lwjgl.glfw.GLFW;
+public class Engine {
+    public static void main(String[] args) {
+        App demo = new App();
+        demo.run();
+    }
+}
 
-public class App extends Window {
+/*public class Entry extends Window {
     public static String WINDOW_TITLE = "Engenie App Test"; // WINDOW ITEMS MUST ALWAYS BE STATIC
     public static int WINDOW_WIDTH = 1280, WINDOW_HEIGHT = 720; // WINDOW ITEMS MUST ALWAYS BE STATIC
 
@@ -17,7 +17,7 @@ public class App extends Window {
     private Animation run, walk;
     private Background bg;
 
-    public App() {
+    public Entry() {
         super(WINDOW_TITLE, WINDOW_WIDTH, WINDOW_HEIGHT);
     }
 
@@ -60,7 +60,7 @@ public class App extends Window {
     }
 
     public static void main(String[] args) {
-        App app = new App();
+        Entry app = new Entry();
         app.run();
     }
-}
+}*/
