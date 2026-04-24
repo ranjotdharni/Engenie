@@ -10,7 +10,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Background {
     private Texture bg;
     private Rectangle focalRectangle;
-    private float width, height, SINGLE_PIXEL_WIDTH, SINGLE_PIXEL_HEIGHT, offsetX = 0f, offsetY = 0f, stepX, stepY, mirrorX = 1f, mirrorY = 1f;
+    private float width, height, offsetX = 0f, offsetY = 0f, stepX, stepY, mirrorX = 1f, mirrorY = 1f;
     private Border mapBorders = null;
 
     public Background(Rectangle focalRectangle, TexturePack assets, float stepX, float stepY) {
@@ -18,8 +18,6 @@ public class Background {
         this.bg = assets.generateTexture();
         this.width = assets.getWidth();
         this.height = assets.getHeight();
-        this.SINGLE_PIXEL_WIDTH = bg.getSinglePixelWidth();
-        this.SINGLE_PIXEL_HEIGHT = bg.getSinglePixelHeight();
         this.stepX = stepX;
         this.stepY = stepY;
     }
@@ -29,8 +27,6 @@ public class Background {
         this.bg = assets.generateTexture();
         this.width = assets.getWidth();
         this.height = assets.getHeight();
-        this.SINGLE_PIXEL_WIDTH = bg.getSinglePixelWidth();
-        this.SINGLE_PIXEL_HEIGHT = bg.getSinglePixelHeight();
         this.stepX = stepX;
         this.stepY = stepY;
         this.mirrorX = flipH ? -1f : 1f;
@@ -42,8 +38,6 @@ public class Background {
         this.bg = assets.generateTexture();
         this.width = assets.getWidth();
         this.height = assets.getHeight();
-        this.SINGLE_PIXEL_WIDTH = bg.getSinglePixelWidth();
-        this.SINGLE_PIXEL_HEIGHT = bg.getSinglePixelHeight();
         this.stepX = stepX;
         this.stepY = stepY;
         this.mapBorders = borders;
@@ -54,8 +48,6 @@ public class Background {
         this.bg = assets.generateTexture();
         this.width = assets.getWidth();
         this.height = assets.getHeight();
-        this.SINGLE_PIXEL_WIDTH = bg.getSinglePixelWidth();
-        this.SINGLE_PIXEL_HEIGHT = bg.getSinglePixelHeight();
         this.stepX = stepX;
         this.stepY = stepY;
         this.mirrorX = flipH ? -1f : 1f;
@@ -76,7 +68,7 @@ public class Background {
     }
 
     public void draw() {
-        renderTexture(new Frame(bg, 0, 0));
+        // renderTexture(new Frame(bg, 0, 0));
 
         if (mapBorders == null) {
             return;
@@ -106,7 +98,7 @@ public class Background {
         }
     }
 
-    private void renderTexture(Frame currentFrame) {
+    /*private void renderTexture(Frame currentFrame) {
         // Bind texture
         glBindTexture(GL_TEXTURE_2D, currentFrame.getTexture().getTextureId());
 
@@ -123,5 +115,5 @@ public class Background {
         glTexCoord2f( 0, 0);
         glVertex2f(-3 * mirrorX + SINGLE_PIXEL_WIDTH * offsetX, -3 * mirrorY + SINGLE_PIXEL_HEIGHT * offsetY);
         glEnd();
-    }
+    }*/
 }

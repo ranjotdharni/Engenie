@@ -3,6 +3,7 @@ package Render;
 import Animate.Animatable;
 import Animate.Animation;
 import Geometry.Rectangle;
+import Graphics.Texture;
 import Orchestration.Window;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -27,56 +28,40 @@ public class Renderer {
 
         for (int i = 0; i < this.animationCount; i++) {
             Animation animation = this.animatables[i].getAnimation();
+            animation.advance();
+
             Rectangle canvas = animation.getCanvas();
+            Texture texture = animation.getTexture();
 
-            int textureId = animation.getTexture().getTextureId();
-
-            float width = animation.getWidth();
-            float height = animation.getHeight();
             float scale = animation.getScale();
-            float texturePixelWidth = animation.getTexturePixelWidth();
-            float texturePixelHeight = animation.getTexturePixelHeight();
-            float animationIndex = animation.getAnimationIndex();
-            float frameIndex = animation.getFrameIndex();
-            float mirrorX = animation.getMirrorX();
-            float mirrorY = animation.getMirrorY();
-
-            float left = canvas.getPosition().getX() * (2f / (float) Window.WINDOW_WIDTH);
-            float top = canvas.getPosition().getY() * (2f / (float) Window.WINDOW_HEIGHT);
-            float right = left + (width * scale * (2f / (float) Window.WINDOW_WIDTH));
-            float bottom = top - (height * scale * (2f / (float) Window.WINDOW_HEIGHT));
-
-            if (mirrorX < 0f) {
-                float tempRight = right;
-                right = left;
-                left = tempRight;
-            }
-
-            if (mirrorY < 0f) {
-                float tempBottom = bottom;
-                bottom = top;
-                top = tempBottom;
-            }
+            int animationIndex = animation.getAnimationIndex();
+            int frameIndex = animation.getFrameIndex();
 
             // Bind texture
-            glBindTexture(GL_TEXTURE_2D, textureId);
+            glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
 
             // texture coords range from 0 to 1
             // vertex coords range from -1 to 1
 
-            // When rendering texture coordinates below, we divide by 2 because the texture grid goes from 0 to
-            // 1, so its single pixel width would be 1 / width, not 2 / width (same concept applies to height)
+            QuadVertexMap vertexMap = new QuadVertexMap(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT, canvas, scale, animation.getMirrorX() < 0f, animation.getMirrorY() < 0f);
 
-            float texLeft   = texturePixelWidth * frameIndex;
-            float texRight  = texturePixelWidth * (frameIndex + 1);
-            float texTop    = texturePixelHeight * animationIndex;
-            float texBottom = texturePixelHeight * (animationIndex + 1);
+            float vertexLeft = vertexMap.calculateLeft();
+            float vertexRight = vertexMap.calculateRight();
+            float vertexTop = vertexMap.calculateTop();
+            float vertexBottom = vertexMap.calculateBottom();
+
+            QuadTexMap textureMap = new QuadTexMap(texture.getPackWidth(), texture.getPackHeight(), texture.getItemWidth(), texture.getItemHeight(), frameIndex, animationIndex);
+
+            float texLeft   = textureMap.calculateLeft();
+            float texRight  = textureMap.calculateRight();
+            float texTop    = textureMap.calculateTop();
+            float texBottom = textureMap.calculateBottom();
 
             glBegin(GL_QUADS);
-            glTexCoord2f(texLeft,  texTop);    glVertex2f(left,  top);
-            glTexCoord2f(texRight, texTop);    glVertex2f(right, top);
-            glTexCoord2f(texRight, texBottom); glVertex2f(right, bottom);
-            glTexCoord2f(texLeft,  texBottom); glVertex2f(left,  bottom);
+            glTexCoord2f(texLeft,  texTop);    glVertex2f(vertexLeft,  vertexTop); // top left
+            glTexCoord2f(texRight, texTop);    glVertex2f(vertexRight, vertexTop);    // top right
+            glTexCoord2f(texRight, texBottom); glVertex2f(vertexRight, vertexBottom);      // bottom right
+            glTexCoord2f(texLeft,  texBottom); glVertex2f(vertexLeft,  vertexBottom);   // bottom left
             glEnd();
 
             if (animation.isRectangleShowing()) {
@@ -87,10 +72,10 @@ public class Renderer {
 
                 // Draw the outline using GL_LINE_LOOP
                 glBegin(GL_LINE_LOOP);
-                glVertex2f(left,  top);     // no mirrorX/mirrorY here either
-                glVertex2f(right, top);
-                glVertex2f(right, bottom);
-                glVertex2f(left,  bottom);
+                glVertex2f(vertexLeft,  vertexTop);
+                glVertex2f(vertexRight, vertexTop);
+                glVertex2f(vertexRight, vertexBottom);
+                glVertex2f(vertexLeft,  vertexBottom);
                 glEnd();
 
                 // Re-enable texturing
@@ -99,9 +84,6 @@ public class Renderer {
                 // Restore the default color (white)
                 glColor3f(1.0f, 1.0f, 1.0f);
             }
-
-            animation.advance();
         }
-
     }
 }

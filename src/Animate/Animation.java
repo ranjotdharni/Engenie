@@ -13,8 +13,8 @@ public class Animation {
     private Texture texture;
     private boolean running = false, showRectangle = false, looping = false;
     //private Point position;
-    private float delay, scale, width, height, TEXTURE_PIXEL_WIDTH, TEXTURE_PIXEL_HEIGHT, mirrorX = 1f, mirrorY = 1f;
-    private int animationIndex, frameIndex = 0, frameCount;
+    private float delay, scale, width, height, mirrorX = 1f, mirrorY = 1f;
+    private int animationIndex = -1, frameIndex = 0, frameCount = -1;
     private long time;
     private Frame[] frames;
 
@@ -24,8 +24,6 @@ public class Animation {
         this.scale = canvas.getScale();
         this.width = canvas.getWidth();
         this.height = canvas.getHeight();
-        this.TEXTURE_PIXEL_WIDTH = texture.getSinglePixelWidth() * width / 2f;
-        this.TEXTURE_PIXEL_HEIGHT = texture.getSinglePixelHeight() * height / 2f;
         this.animationIndex = animationIndex;
         this.looping = looping;
         this.running = running;
@@ -57,8 +55,6 @@ public class Animation {
         if (!running)
             return;
 
-        renderTexture();
-
         if ((System.currentTimeMillis() - time) > delay) {  // If time since last frame has exceeded delay, increment frame
             this.time = System.currentTimeMillis();
             this.frameIndex++;
@@ -69,55 +65,6 @@ public class Animation {
             if (!looping) {
                 running = false;
             }
-        }
-    }
-
-    private void renderTexture() {
-        float left = canvas.getPosition().getX() * (2f / (float) Window.WINDOW_WIDTH);
-        float top = canvas.getPosition().getY() * (2f / (float) Window.WINDOW_HEIGHT);
-        float right = left + (width * scale * (2f / (float) Window.WINDOW_WIDTH));
-        float bottom = top - (height * scale * (2f / (float) Window.WINDOW_HEIGHT));
-
-
-        // Bind texture
-        glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
-
-        // texture coords range from 0 to 1
-        // vertex coords range from -1 to 1
-
-        // When rendering texture coordinates below, we divide by 2 because the texture grid goes from 0 to
-        // 1, so its single pixel width would be 1 / width, not 2 / width (same concept applies to height)
-
-        glBegin(GL_QUADS);
-        glTexCoord2f(TEXTURE_PIXEL_WIDTH * frameIndex, TEXTURE_PIXEL_HEIGHT * animationIndex);
-        glVertex2f(left * mirrorX, top * mirrorY);
-        glTexCoord2f(TEXTURE_PIXEL_WIDTH * (frameIndex + 1), TEXTURE_PIXEL_HEIGHT * animationIndex);
-        glVertex2f(right * mirrorX, top * mirrorY);
-        glTexCoord2f(TEXTURE_PIXEL_WIDTH * (frameIndex + 1), TEXTURE_PIXEL_HEIGHT * (animationIndex + 1));
-        glVertex2f(right * mirrorX, bottom * mirrorY);
-        glTexCoord2f(TEXTURE_PIXEL_WIDTH * frameIndex, TEXTURE_PIXEL_HEIGHT * (animationIndex + 1));
-        glVertex2f(left * mirrorX, bottom * mirrorY);
-        glEnd();
-
-        if (showRectangle) {
-            glDisable(GL_TEXTURE_2D);
-
-            // Set the color for the outline (e.g., red)
-            glColor3f(1.0f, 0.0f, 0.0f);
-
-            // Draw the outline using GL_LINE_LOOP
-            glBegin(GL_LINE_LOOP);
-            glVertex2f(left * mirrorX, top * mirrorY);
-            glVertex2f(right * mirrorX, top * mirrorY);
-            glVertex2f(right * mirrorX, bottom * mirrorY);
-            glVertex2f(left * mirrorX, bottom * mirrorY);
-            glEnd();
-
-            // Re-enable texturing
-            glEnable(GL_TEXTURE_2D);
-
-            // Restore the default color (white)
-            glColor3f(1.0f, 1.0f, 1.0f);
         }
     }
 
@@ -139,9 +86,6 @@ public class Animation {
     public Frame getCurrentFrame() {
         return frames[frameIndex];
     }
-    public Rectangle getRenderRectangle() {
-        return this.canvas;
-    }
     public Point getPosition() {
         return this.canvas.getPosition();
     }
@@ -150,10 +94,8 @@ public class Animation {
     public float getHeight() { return this.height; }
     public float getScale() { return this.scale; }
     public Texture getTexture() { return this.texture; }
-    public float getTexturePixelWidth() { return this.TEXTURE_PIXEL_WIDTH; }
-    public float getTexturePixelHeight() { return this.TEXTURE_PIXEL_HEIGHT; }
-    public float getAnimationIndex() { return this.animationIndex; }
-    public float getFrameIndex() { return this.frameIndex; }
+    public int getAnimationIndex() { return this.animationIndex; }
+    public int getFrameIndex() { return this.frameIndex; }
     public float getMirrorX() { return this.mirrorX; }
     public float getMirrorY() { return this.mirrorY; }
 

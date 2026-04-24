@@ -58,7 +58,7 @@ public class PlayerState extends StateManager<Player> {
     }
 
     private void _ACTIVE_RUNNING_RIGHT(Player entity) {
-        entity.movePositionX(1.5f);
+        entity.movePositionX(0.1f);
     }
 
     private void _APPLY_RUNNING_LEFT(Player entity) {
@@ -72,6 +72,6 @@ public class PlayerState extends StateManager<Player> {
     }
 
     private void _ACTIVE_RUNNING_LEFT(Player entity) {
-        entity.movePositionX(-1.5f);
+        entity.movePositionX(-0.1f);
     }
 }

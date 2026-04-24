@@ -2,12 +2,12 @@ package Graphics;
 
 public class Texture {
     private int textureId;
-    private float SINGLE_PIXEL_WIDTH, SINGLE_PIXEL_HEIGHT, itemWidth, itemHeight;
+    private float packWidth, packHeight, itemWidth, itemHeight;
 
     public Texture(int textureId, float width, float height, float itemWidth, float itemHeight) {
         this.textureId = textureId;
-        this.SINGLE_PIXEL_WIDTH = 2f / width;
-        this.SINGLE_PIXEL_HEIGHT = 2f / height;
+        this.packWidth = width;
+        this.packHeight = height;
         this.itemWidth = itemWidth;
         this.itemHeight = itemHeight;
     }
@@ -16,12 +16,12 @@ public class Texture {
         return textureId;
     }
 
-    public float getSinglePixelWidth() {
-        return SINGLE_PIXEL_WIDTH;
+    public float getPackWidth() {
+        return packWidth;
     }
 
-    public float getSinglePixelHeight() {
-        return SINGLE_PIXEL_HEIGHT;
+    public float getPackHeight() {
+        return packHeight;
     }
 
     public float getItemWidth() {

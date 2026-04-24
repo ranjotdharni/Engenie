@@ -24,7 +24,7 @@ public class PlayerController extends Controller<Player> {
 
     private Consumer<Player> applyState(String stateId) {
         return (Player entity) -> {
-            entity.getStateManager().setState(stateId);
+            entity.getPlayerState().setState(stateId);
         };
     }
 }

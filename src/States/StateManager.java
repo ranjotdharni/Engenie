@@ -47,9 +47,6 @@ public class StateManager<T> {
         // if (this.DEFAULT_STATE_ID.equals(stateId))
         //     throw new IllegalArgumentException("State Manager attempted to add a state with stateId == DEFAULT_STATE_ID.\nDEFAULT_STATE_ID is a reserved value.\n Default State ID: " + this.DEFAULT_STATE_ID);
 
-        if (defaultState)
-            this.currentState = stateId;
-
         if (state.isActiveState()) {
             this.activeStates.put(stateId, (ActiveState<T>) state);
             if (defaultState)
@@ -57,6 +54,11 @@ public class StateManager<T> {
         }
         else {
             this.staticStates.put(stateId, state);
+        }
+
+        if (defaultState) {
+            this.currentState = stateId;
+            setState(stateId);
         }
     }
 

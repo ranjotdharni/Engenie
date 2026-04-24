@@ -14,9 +14,21 @@ public class TexturePack {
     private float width, height, itemWidth, itemHeight;
 
     public TexturePack(String path, float width, float height, float itemWidth, float itemHeight) {
-        IntBuffer widthBuffer = BufferUtils.createIntBuffer((int) (width + 0.5f)); // change this!!!!!
-        IntBuffer heightBuffer = BufferUtils.createIntBuffer((int) (height + 0.5f)); // change this!!!!!
+        IntBuffer widthBuffer = BufferUtils.createIntBuffer((int) width); // change this!!!!!
+        IntBuffer heightBuffer = BufferUtils.createIntBuffer((int) height); // change this!!!!!
         IntBuffer channelsBuffer = BufferUtils.createIntBuffer(4);
+
+        /*
+            Images are loaded left to right, top-down, so 0, 0 is their top left;
+            Textures are loaded left to right, bottom-up, so 0, 0 is their bottom left;
+
+            Therefore, loading an image into a texture causes it to load into the GPU vertically flipped (the
+            image's start coordinate, top left, is loaded into the texture's start coordinate bottom left).
+
+            We flip the whole sheet vertically once below before it is loaded in to align
+            everything and avoid having to re-calculate for the flip on each render.
+        */
+        STBImage.stbi_set_flip_vertically_on_load(true);
 
         ByteBuffer image = STBImage.stbi_load(path, widthBuffer, heightBuffer, channelsBuffer, 4); // 4 = RGBA channels
 
@@ -56,10 +68,10 @@ public class TexturePack {
     }
 
     public float getWidth() {
-        return width;
+        return this.width;
     }
 
     public float getHeight() {
-        return height;
+        return this.height;
     }
 }
