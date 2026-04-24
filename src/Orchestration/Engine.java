@@ -2,11 +2,10 @@ package Orchestration;
 
 import Demo.Player;
 import Demo.PlayerController;
-import Demo.PlayerState;
 import Render.Renderer;
 import States.StateManager;
 
-public class App {
+public class Engine {
     // ORDER IS IMPORTANT
     private Window window = new Window();   // Initialize Window first so GLFW can create it, other modules depend on this
     private Player player = new Player();
@@ -17,7 +16,7 @@ public class App {
             this.player.getPlayerState()
     };
 
-    public App() {
+    public Engine() {
         this.renderer.addAnimatable(this.player);
     }
 

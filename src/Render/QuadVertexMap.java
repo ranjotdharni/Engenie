@@ -58,12 +58,12 @@ public class QuadVertexMap {
         if (this.flipY)
             return ( this.y * this.normalizedWindowHeightUnit ) - 1f;
 
-        return ( this.y + ( this.height * this.scale ) * this.normalizedWindowHeightUnit ) - 1f;
+        return ( ( this.y + ( this.height * this.scale ) ) * this.normalizedWindowHeightUnit ) - 1f;
     }
 
     public float calculateBottom() {
         if (this.flipY)
-            return ( this.y + ( this.height * this.scale ) * this.normalizedWindowHeightUnit ) - 1f;
+            return ( ( this.y + ( this.height * this.scale ) ) * this.normalizedWindowHeightUnit ) - 1f;
 
         return ( this.y * this.normalizedWindowHeightUnit ) - 1f;
     }
@@ -72,12 +72,12 @@ public class QuadVertexMap {
         if (this.flipX)
             return ( this.x * this.normalizedWindowWidthUnit ) - 1f;
 
-        return ( this.x + ( this.width * this.scale ) * this.normalizedWindowWidthUnit ) - 1f;
+        return ( ( this.x + ( this.width * this.scale ) ) * this.normalizedWindowWidthUnit ) - 1f;
     }
 
     public float calculateLeft() {
         if (this.flipX)
-            return ( this.x + ( this.width * this.scale ) * this.normalizedWindowWidthUnit ) - 1f;
+            return ( ( this.x + ( this.width * this.scale ) ) * this.normalizedWindowWidthUnit ) - 1f;
 
         return ( this.x * this.normalizedWindowWidthUnit ) - 1f;
     }

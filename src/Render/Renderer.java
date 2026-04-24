@@ -43,6 +43,8 @@ public class Renderer {
             // texture coords range from 0 to 1
             // vertex coords range from -1 to 1
 
+            System.out.println("X: " + canvas.getPosition().getX() + " Y: " + canvas.getPosition().getY());
+
             QuadVertexMap vertexMap = new QuadVertexMap(Window.WINDOW_WIDTH, Window.WINDOW_HEIGHT, canvas, scale, animation.getMirrorX() < 0f, animation.getMirrorY() < 0f);
 
             float vertexLeft = vertexMap.calculateLeft();
