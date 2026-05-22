@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 public class StateManager<T> {
     private String currentState = "";
-    private T entity = null;
+    protected T entity = null;
     private boolean inActiveState = false;
     private HashMap<String, State<T>> staticStates = new HashMap<String, State<T>>();
     private HashMap<String, ActiveState<T>> activeStates = new HashMap<String, ActiveState<T>>();

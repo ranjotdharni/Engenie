@@ -18,6 +18,11 @@ public class Player implements Animatable {
 
     public PlayerState getPlayerState() { return this.playerState; }
 
+    public Point getPosition() { return this.position; }
+    public TexturePack getSpritesheet() { return this.spritesheet; }
+
+    public void setAnimation(Animation animation) { this.animation = animation; }
+
     public void movePositionX(float stepX) { this.position.setX(this.position.getX() + stepX); }
     public void movePositionY(float stepY) { this.position.setY(this.position.getY() + stepY); }
 }
